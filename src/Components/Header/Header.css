@@ -1,0 +1,15 @@
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.headerNavigation {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.headerLink {
+  text-decoration: none;
+  color: black;
+}

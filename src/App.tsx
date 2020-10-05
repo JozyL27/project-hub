@@ -4,6 +4,7 @@ import LoginPage from "./Routes/LoginPage/LoginPage";
 import RegistrationPage from "./Routes/RegistrationPage/RegistrationPage";
 import Header from "./Components/Header/Header";
 import { Switch, Route } from "react-router-dom";
+import AppList from "./Routes/AppList/AppList";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/register" component={RegistrationPage} />
+        <Route exact path="/list" component={AppList} />
       </Switch>
     </div>
   );
