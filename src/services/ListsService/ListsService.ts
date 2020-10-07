@@ -20,6 +20,19 @@ const graphqlRequest = async (query: any, variables = {}) => {
   return responseBody.data;
 };
 
+export const getListById = async (id: string) => {
+  const query = `query ListQuery($id: ID!){
+        list(id: $id) {
+          id
+          title
+          author
+        }
+    }`;
+
+  const { list } = await graphqlRequest(query, { id });
+  return list;
+};
+
 export const getUserLists = async (id: any) => {
   const query = `query ListsQuery($id: ID!){
         lists(id: $id) {
