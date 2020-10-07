@@ -1,0 +1,34 @@
+import config from "../../config";
+
+const graphqlRequest = async (query: any, variables = {}) => {
+  const res = await fetch(config.API_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+
+  const responseBody = await res.json();
+  if (responseBody.errors) {
+    const message = responseBody.errors
+      .map((error: any) => error.message)
+      .join("\n");
+    throw new Error(message);
+  }
+
+  return responseBody.data;
+};
+
+export const getUserLists = async (id: any) => {
+  const query = `query ListsQuery($id: ID!){
+        lists(id: $id) {
+          id
+          title
+          author
+        }
+    }`;
+
+  const { lists } = await graphqlRequest(query, { id });
+  return lists;
+};

@@ -12,7 +12,7 @@ const AvatarNavigation = () => {
     <div className="headerNavigation">
       {isAuthenticated ? <LogoutButton /> : <LoginButton />}
       {isAuthenticated ? (
-        <Link to="/list" className="headerLink">
+        <Link to="/lists" className="navLink">
           <div className="logDiv">Projects</div>
         </Link>
       ) : null}
