@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getUserLists } from "../../services/ListsService/ListsService";
 import { Link } from "react-router-dom";
+import CreateList from "../../Components/CreateList/CreateList";
 import "./Applist.css";
 
 // type list = {
@@ -24,14 +25,15 @@ const AppList = () => {
   return (
     <section className="appListSection">
       <h3>Lists</h3>
+      <CreateList />
       <ul className="listsContainer">
         {isAuthenticated && lists.length > 0
           ? lists.map((el: any) => (
-              <li key={el.id}>
-                <h4>
-                  <Link to={`/list/${el.id}`}>{el.title}</Link>
-                </h4>
-              </li>
+              <Link to={`/list/${el.id}`} className="listItemLink" key={el.id}>
+                <li className="listItem">
+                  <h4>{el.title}</h4>
+                </li>
+              </Link>
             ))
           : null}
       </ul>

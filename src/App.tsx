@@ -1,21 +1,23 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import LandingPage from "./Routes/LandingPage/LandingPage";
 import Header from "./Components/Header/Header";
 import { Switch, Route } from "react-router-dom";
-import AppList from "./Routes/AppList/AppList";
-import ListPage from "./Routes/ListPage/ListPage";
+const ListPage = lazy(() => import("./Routes/ListPage/ListPage"));
+const AppList = lazy(() => import("./Routes/AppList/AppList"));
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <Header />
-      <Switch>
-        <Route exact path="/" component={LandingPage} />
-        <Route exact path="/lists" component={AppList} />
-        <Route exact path="/list/:listId" component={ListPage} />
-      </Switch>
+      <Suspense fallback={<p>...loading</p>}>
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/lists" component={AppList} />
+          <Route exact path="/list/:listId" component={ListPage} />
+        </Switch>
+      </Suspense>
     </div>
   );
-}
+};
 
 export default App;

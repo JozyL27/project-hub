@@ -45,3 +45,15 @@ export const getUserLists = async (id: any) => {
   const { lists } = await graphqlRequest(query, { id });
   return lists;
 };
+
+export const createList = async (input: any) => {
+  const query = `mutation CreateList($input: CreateListInput){
+        list: createList(input: $input) {
+            title
+            author
+        }
+    }`;
+
+  const { list } = await graphqlRequest(query, { input });
+  return list;
+};
