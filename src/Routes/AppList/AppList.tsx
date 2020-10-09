@@ -22,10 +22,15 @@ const AppList = () => {
     isAuthenticated && fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const onAddNewList = async () => {
+    const lists = await getUserLists(user.sub);
+    setLists(lists);
+  };
+
   return (
     <section className="appListSection">
       <h3>Lists</h3>
-      <CreateList />
+      <CreateList onAddNewList={onAddNewList} />
       <ul className="listsContainer">
         {isAuthenticated && lists.length > 0
           ? lists.map((el: any) => (
