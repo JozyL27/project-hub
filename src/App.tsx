@@ -4,6 +4,7 @@ import Header from "./Components/Header/Header";
 import { Switch, Route } from "react-router-dom";
 const ListPage = lazy(() => import("./Routes/ListPage/ListPage"));
 const AppList = lazy(() => import("./Routes/AppList/AppList"));
+const ProjectPage = lazy(() => import("./Routes/ProjectPage/ProjectPage"));
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/lists" component={AppList} />
           <Route exact path="/list/:listId" component={ListPage} />
+          <Route exact path="/project/:projectId" component={ProjectPage} />
         </Switch>
       </Suspense>
     </div>

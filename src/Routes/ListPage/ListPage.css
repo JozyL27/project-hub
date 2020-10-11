@@ -1,0 +1,15 @@
+.listPageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 50px auto 20px auto;
+}
+
+.listPageUl {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

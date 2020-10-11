@@ -34,3 +34,18 @@ export const getProjectsByListId = async (id: string) => {
   const { projects } = await graphqlRequest(query, { id });
   return projects;
 };
+
+export const getProjectById = async (id: string) => {
+  const query = `query ProjectQuery($id: ID!) {
+        project(id: $id) {
+          id
+          title
+          description
+          link
+          list_id
+        }
+    }`;
+
+  const { project } = await graphqlRequest(query, { id });
+  return project;
+};
