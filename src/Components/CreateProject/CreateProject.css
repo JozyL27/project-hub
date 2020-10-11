@@ -1,0 +1,28 @@
+.createProjectContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.createProjectForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px auto 30px auto;
+
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+  padding: 30px;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.createProjectForm > button {
+  margin-top: 10px;
+}
+
+.newProjectSpan {
+  color: grey;
+  font-weight: 500;
+}

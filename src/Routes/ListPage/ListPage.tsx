@@ -3,6 +3,7 @@ import { getListById } from "../../services/ListsService/ListsService";
 import { getProjectsByListId } from "../../services/ProjectsService/ProjectsService";
 import ProjectCard from "../../Components/ProjectCard/ProjectCard";
 import { useAuth0 } from "@auth0/auth0-react";
+import CreateProject from "../../Components/CreateProject/CreateProject";
 import "./ListPage.css";
 
 const ListPage = (props: any) => {
@@ -24,6 +25,7 @@ const ListPage = (props: any) => {
   return (
     <section className="listPageContainer">
       <h3 className="listPageH3">{list.title}</h3>
+      <CreateProject />
       <ul className="listPageUl">
         {projects.length > 0
           ? projects.map((el: any) => (

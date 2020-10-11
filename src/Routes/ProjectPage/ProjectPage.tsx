@@ -13,7 +13,8 @@ const ProjectPage = (props: any) => {
       setProject(project);
     };
     isAuthenticated && fetchData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <section>
       <h3>{project.title}</h3>
