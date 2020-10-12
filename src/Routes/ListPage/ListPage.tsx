@@ -8,16 +8,25 @@ import "./ListPage.css";
 
 const ListPage = (props: any) => {
   const [list, setList] = useState<any>({});
+  const [error, setError] = useState<any>(null);
   const [projects, setProjects] = useState<any>([]);
   const { isAuthenticated } = useAuth0();
   const { listId } = props.match.params;
 
+  const onAddNewProject = async () => {
+    const projects = await getProjectsByListId(listId);
+    setProjects(projects);
+  };
+
   useEffect(() => {
+    setError(null);
     const fetchData = async () => {
       const list = await getListById(listId);
-      const projects = await getProjectsByListId(listId);
+      const projects = await getProjectsByListId(listId).catch((err) => {
+        setError(err);
+      });
       setList(list);
-      setProjects(projects);
+      !error && setProjects(projects);
     };
     isAuthenticated && fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -25,9 +34,10 @@ const ListPage = (props: any) => {
   return (
     <section className="listPageContainer">
       <h3 className="listPageH3">{list.title}</h3>
-      <CreateProject />
+      <CreateProject listId={listId} onAddNewProject={onAddNewProject} />
+      {error && <p>{error.message}</p>}
       <ul className="listPageUl">
-        {projects.length > 0
+        {!error && projects.length > 0
           ? projects.map((el: any) => (
               <ProjectCard key={el.id} id={el.id} title={el.title} />
             ))

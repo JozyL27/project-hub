@@ -1,39 +1,48 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import { addNewProject } from "../../services/ProjectsService/ProjectsService";
 import "./CreateProject.css";
 
-const CreateProject = () => {
+const CreateProject = (props: any) => {
   const [touched, setTouched] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [link, setLink] = useState("");
+  const [isAddingValues, setIsAddingValues] = useState(false);
   const onNewProjectClick = () => {
     setTouched(true);
   };
   const onCancelClick = () => {
     setTouched(false);
+    setIsAddingValues(false);
     setTitle("");
+    setDescription("");
+    setLink("");
   };
   const onValueChange = (event: any) => {
-    console.log(event.target.name);
     if (event.target.name === "title") {
       setTitle(event.target.value);
+      setIsAddingValues(true);
     } else if (event.target.name === "description") {
       setDescription(event.target.value);
     } else {
       setLink(event.target.value);
     }
   };
-  const onFormSubmit = (event: any) => {
+  const onFormSubmit = async (event: any) => {
     event.preventDefault();
-    setTouched(false);
-    setTitle("");
-    setLink("");
-    setDescription("");
-    console.log(title, description, link);
+    const { listId, onAddNewProject } = props;
+    const input = { title, description, link, list_id: listId };
+    await addNewProject(input).then((res: any) => {
+      onAddNewProject();
+      setTouched(false);
+      setIsAddingValues(false);
+      setTitle("");
+      setLink("");
+      setDescription("");
+    });
   };
-  console.log({ title, description, link });
 
   return (
     <div className="createProjectContainer">
@@ -57,6 +66,20 @@ const CreateProject = () => {
             value={title}
             required
             onChange={onValueChange}
+            error={
+              title.length < 4 && isAddingValues
+                ? true
+                : title.length >= 20
+                ? true
+                : false
+            }
+            helperText={
+              title.length < 4 && isAddingValues
+                ? "Title must be at least 4 characters long."
+                : title.length >= 20
+                ? "Title cannot exceed 20 characters in length."
+                : null
+            }
           />
           <TextField
             id="link"

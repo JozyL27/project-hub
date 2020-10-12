@@ -49,3 +49,18 @@ export const getProjectById = async (id: string) => {
   const { project } = await graphqlRequest(query, { id });
   return project;
 };
+
+export const addNewProject = async (input: object) => {
+  const query = `mutation CreateProject($input: CreateProjectInput) {
+        Project: createProject(input: $input) {
+            id
+            title
+            description
+            link
+            list_id
+        }
+    }`;
+
+  const { project } = await graphqlRequest(query, { input });
+  return project;
+};
