@@ -34,7 +34,6 @@ const CreateList = (props: any) => {
   const onSubmitClick = async (event: any) => {
     event.preventDefault();
     await createList({ title: title, author: user.sub }).then((res) => {
-      console.log(res);
       props.onAddNewList();
       setIsAddingTitle(false);
       setTitle("");

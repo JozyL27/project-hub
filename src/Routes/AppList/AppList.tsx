@@ -4,26 +4,29 @@ import { getUserLists } from "../../services/ListsService/ListsService";
 import { Link } from "react-router-dom";
 import CreateList from "../../Components/CreateList/CreateList";
 import "./Applist.css";
-
-// type list = {
-//   id: number;
-//   title: string;
-// };
+import { getProjectsByListId } from "../../services/ProjectsService/ProjectsService";
 
 const AppList = () => {
   const [lists, setLists] = useState<any>([]);
+  const [error, setError] = useState<any>(null);
   const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
+    setError(null);
     const fetchData = async () => {
-      const lists = await getUserLists(user.sub);
+      const lists = await getUserLists(user.sub).catch((err: any) => {
+        setError(err);
+      });
       setLists(lists);
     };
     isAuthenticated && fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onAddNewList = async () => {
-    const lists = await getUserLists(user.sub);
+    setError(null);
+    const lists = await getUserLists(user.sub).catch((err: any) => {
+      setError(err);
+    });
     setLists(lists);
   };
 
@@ -31,8 +34,9 @@ const AppList = () => {
     <section className="appListSection">
       <h3>Lists</h3>
       <CreateList onAddNewList={onAddNewList} />
+      {error && <p>{error.message}</p>}
       <ul className="listsContainer">
-        {isAuthenticated && lists.length > 0
+        {lists && !error
           ? lists.map((el: any) => (
               <Link to={`/list/${el.id}`} className="listItemLink" key={el.id}>
                 <li className="listItem">

@@ -14,7 +14,10 @@ const ListPage = (props: any) => {
   const { listId } = props.match.params;
 
   const onAddNewProject = async () => {
-    const projects = await getProjectsByListId(listId);
+    setError(null);
+    const projects = await getProjectsByListId(listId).catch((err) => {
+      setError(err);
+    });
     setProjects(projects);
   };
 
@@ -37,7 +40,7 @@ const ListPage = (props: any) => {
       <CreateProject listId={listId} onAddNewProject={onAddNewProject} />
       {error && <p>{error.message}</p>}
       <ul className="listPageUl">
-        {!error && projects.length > 0
+        {!error && projects
           ? projects.map((el: any) => (
               <ProjectCard key={el.id} id={el.id} title={el.title} />
             ))
