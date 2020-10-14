@@ -39,3 +39,9 @@
   text-decoration: none;
   color: black;
 }
+
+.error {
+  font-weight: 500;
+  color: crimson;
+  text-align: center;
+}

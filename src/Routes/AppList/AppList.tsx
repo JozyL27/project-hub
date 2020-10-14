@@ -4,7 +4,6 @@ import { getUserLists } from "../../services/ListsService/ListsService";
 import { Link } from "react-router-dom";
 import CreateList from "../../Components/CreateList/CreateList";
 import "./Applist.css";
-import { getProjectsByListId } from "../../services/ProjectsService/ProjectsService";
 
 const AppList = () => {
   const [lists, setLists] = useState<any>([]);
@@ -22,19 +21,18 @@ const AppList = () => {
     isAuthenticated && fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onAddNewList = async () => {
+  const onAddNewList = () => {
     setError(null);
-    const lists = await getUserLists(user.sub).catch((err: any) => {
-      setError(err);
+    getUserLists(user.sub).then((res: any) => {
+      setLists(res);
     });
-    setLists(lists);
   };
 
   return (
     <section className="appListSection">
       <h3>Lists</h3>
       <CreateList onAddNewList={onAddNewList} />
-      {error && <p>{error.message}</p>}
+      {error && <p className="error">{error.message}</p>}
       <ul className="listsContainer">
         {lists && !error
           ? lists.map((el: any) => (

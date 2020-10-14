@@ -13,7 +13,7 @@ const AvatarNavigation = () => {
       {isAuthenticated ? <LogoutButton /> : <LoginButton />}
       {isAuthenticated ? (
         <Link to="/lists" className="navLink">
-          <div className="logDiv">Projects</div>
+          <div className="logDiv">Lists</div>
         </Link>
       ) : null}
       {isAuthenticated ? <Avatar src={user.picture} /> : <Avatar />}

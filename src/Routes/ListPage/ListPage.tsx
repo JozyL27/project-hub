@@ -15,9 +15,7 @@ const ListPage = (props: any) => {
 
   const onAddNewProject = async () => {
     setError(null);
-    const projects = await getProjectsByListId(listId).catch((err) => {
-      setError(err);
-    });
+    const projects = await getProjectsByListId(listId);
     setProjects(projects);
   };
 
@@ -26,7 +24,9 @@ const ListPage = (props: any) => {
     const fetchData = async () => {
       const list = await getListById(listId);
       const projects = await getProjectsByListId(listId).catch((err) => {
-        setError(err);
+        if (err) {
+          setError(err);
+        }
       });
       setList(list);
       !error && setProjects(projects);
@@ -38,7 +38,7 @@ const ListPage = (props: any) => {
     <section className="listPageContainer">
       <h3 className="listPageH3">{list.title}</h3>
       <CreateProject listId={listId} onAddNewProject={onAddNewProject} />
-      {error && <p>{error.message}</p>}
+      {error && <p className="error">{error.message}</p>}
       <ul className="listPageUl">
         {!error && projects
           ? projects.map((el: any) => (

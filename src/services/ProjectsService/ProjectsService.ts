@@ -1,27 +1,37 @@
-import config from "../../config";
+import { gql, client } from "../ServiceHelpers/ServiceHelpers";
 
-const graphqlRequest = async (query: any, variables = {}) => {
-  const res = await fetch(config.API_ENDPOINT, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({ query, variables }),
-  });
-
-  const responseBody = await res.json();
-  if (responseBody.errors) {
-    const message = responseBody.errors
-      .map((error: any) => error.message)
-      .join("\n");
-    throw new Error(message);
+const projectDetailFragment = gql`
+  fragment ProjectDetail on Project {
+    id
+    title
+    description
+    link
+    list_id
   }
+`;
 
-  return responseBody.data;
-};
+const projectQuery = gql`
+  query ProjectQuery($id: ID!) {
+    project(id: $id) {
+      ...ProjectDetail
+    }
+  }
+  ${projectDetailFragment}
+`;
+
+const projectMutation = gql`
+  mutation CreateProject($input: CreateProjectInput) {
+    Project: createProject(input: $input) {
+      ...ProjectDetail
+    }
+  }
+  ${projectDetailFragment}
+`;
 
 export const getProjectsByListId = async (id: string) => {
-  const query = `query ProjectsQuery($id: ID!) {
+  try {
+    const query = gql`
+      query ProjectsQuery($id: ID!) {
         projects(id: $id) {
           id
           title
@@ -29,38 +39,43 @@ export const getProjectsByListId = async (id: string) => {
           link
           list_id
         }
-    }`;
-
-  const { projects } = await graphqlRequest(query, { id });
-  return projects;
+      }
+    `;
+    const {
+      data: { projects },
+    }: any = await client.query({
+      query,
+      variables: { id },
+      errorPolicy: "all",
+      fetchPolicy: "no-cache",
+    });
+    return projects;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getProjectById = async (id: string) => {
-  const query = `query ProjectQuery($id: ID!) {
-        project(id: $id) {
-          id
-          title
-          description
-          link
-          list_id
-        }
-    }`;
-
-  const { project } = await graphqlRequest(query, { id });
+  const {
+    data: { project },
+  }: any = await client.query({ query: projectQuery, variables: { id } });
   return project;
 };
 
 export const addNewProject = async (input: object) => {
-  const query = `mutation CreateProject($input: CreateProjectInput) {
-        Project: createProject(input: $input) {
-            id
-            title
-            description
-            link
-            list_id
-        }
-    }`;
-
-  const { project } = await graphqlRequest(query, { input });
-  return project;
+  const {
+    data: { Project },
+  }: any = await client.mutate({
+    mutation: projectMutation,
+    variables: { input },
+    update: (cache: any, { data }: any) => {
+      console.log(data);
+      cache.writeQuery({
+        query: projectQuery,
+        variables: { id: data.Project.id },
+        data,
+      });
+    },
+  });
+  return Project;
 };

@@ -30,17 +30,17 @@ const CreateProject = (props: any) => {
       setLink(event.target.value);
     }
   };
-  const onFormSubmit = async (event: any) => {
+  const onFormSubmit = (event: any) => {
     event.preventDefault();
     const { listId, onAddNewProject } = props;
     const input = { title, description, link, list_id: listId };
-    await addNewProject(input).then((res: any) => {
-      onAddNewProject();
+    addNewProject(input).then((res: any) => {
       setTouched(false);
       setIsAddingValues(false);
       setTitle("");
       setLink("");
       setDescription("");
+      onAddNewProject();
     });
   };
 

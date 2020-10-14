@@ -7,4 +7,5 @@ export default {
     process.env.NODE_ENV === "production"
       ? "Super_Secret_Token"
       : "super-super-super-secret",
+  JWT_SECRET: process.env.JWT_SECRET || "super-super-super-super-secret",
 };
