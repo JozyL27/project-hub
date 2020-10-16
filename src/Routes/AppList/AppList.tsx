@@ -8,12 +8,14 @@ import "./Applist.css";
 const AppList = () => {
   const [lists, setLists] = useState<any>([]);
   const [error, setError] = useState<any>(null);
+  const [page, setPage] = useState(1);
   const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
     setError(null);
+    setPage(1);
     const fetchData = async () => {
-      const lists = await getUserLists(user.sub).catch((err: any) => {
+      const lists = await getUserLists(user.sub, page).catch((err: any) => {
         setError(err);
       });
       setLists(lists);
@@ -21,11 +23,14 @@ const AppList = () => {
     isAuthenticated && fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onAddNewList = () => {
+  const onAddNewList = async () => {
     setError(null);
-    getUserLists(user.sub).then((res: any) => {
-      setLists(res);
-    });
+    try {
+      const lists = await getUserLists(user.sub, page);
+      setLists(lists);
+    } catch (error) {
+      setError(error);
+    }
   };
 
   return (

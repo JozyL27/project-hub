@@ -69,7 +69,6 @@ export const addNewProject = async (input: object) => {
     mutation: projectMutation,
     variables: { input },
     update: (cache: any, { data }: any) => {
-      console.log(data);
       cache.writeQuery({
         query: projectQuery,
         variables: { id: data.Project.id },
