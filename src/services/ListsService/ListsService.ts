@@ -1,39 +1,5 @@
-import { gql, client } from "../ServiceHelpers/ServiceHelpers";
-
-const listDetailFragment = gql`
-  fragment ListDetail on List {
-    id
-    title
-    author
-  }
-`;
-
-const listQuery = gql`
-  query ListQuery($id: ID!) {
-    list(id: $id) {
-      ...ListDetail
-    }
-  }
-  ${listDetailFragment}
-`;
-
-const listsQuery = gql`
-  query ListsQuery($id: ID!, $page: Int) {
-    lists(id: $id, page: $page) {
-      ...ListDetail
-    }
-  }
-  ${listDetailFragment}
-`;
-
-const listMutation = gql`
-  mutation CreateList($input: CreateListInput) {
-    list: createList(input: $input) {
-      ...ListDetail
-    }
-  }
-  ${listDetailFragment}
-`;
+import { client } from "../ServiceHelpers/ServiceHelpers";
+import { listQuery, listsQuery, listMutation } from "./ListsSchema";
 
 export const getListById = async (id: string) => {
   const {
@@ -43,14 +9,18 @@ export const getListById = async (id: string) => {
 };
 
 export const getUserLists = async (id: any, page: any) => {
-  const {
-    data: { lists },
-  }: any = await client.query({
-    query: listsQuery,
-    variables: { id, page },
-    fetchPolicy: "no-cache",
-  });
-  return lists;
+  try {
+    const {
+      data: { lists },
+    }: any = await client.query({
+      query: listsQuery,
+      variables: { id, page },
+      fetchPolicy: "no-cache",
+    });
+    return lists;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export const createList = async (input: any) => {
