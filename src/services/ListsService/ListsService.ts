@@ -11,7 +11,6 @@ export const getListById = async (id: string) => {
 export const getUserLists = async (id: any, page: any) => {
   try {
     const {
-      error,
       data: { lists },
     }: any = await client.query({
       query: listsQuery,
@@ -19,9 +18,6 @@ export const getUserLists = async (id: any, page: any) => {
       fetchPolicy: "no-cache",
       errorPolicy: "all",
     });
-    if (error) {
-      return error;
-    }
     return lists;
   } catch (error) {
     throw new Error(error);
