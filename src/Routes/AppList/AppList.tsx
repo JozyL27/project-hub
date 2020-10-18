@@ -44,17 +44,19 @@ const AppList = () => {
     }
   };
 
-  const arrOfChecks = [lists.length > 0, lists.length % 9 === 0, !error].every(
-    (element) => element === true
-  );
+  const arrOfChecks = [
+    lists && lists.length > 0,
+    lists && lists.length % 9 === 0,
+    !error,
+  ].every((element) => element === true);
 
   return (
     <section className="appListSection">
       <h3>Lists</h3>
       <CreateList onAddNewList={onAddNewList} />
-      {/* {error && <p className="error">{error.message}</p>} */}
+      {error && <p className="error">{error.message}</p>}
       <ul className="listsContainer">
-        {lists && !error
+        {lists
           ? lists.map((el: any) => (
               <Link to={`/list/${el.id}`} className="listItemLink" key={el.id}>
                 <li className="listItem">

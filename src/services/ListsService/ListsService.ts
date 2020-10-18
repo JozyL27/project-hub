@@ -16,6 +16,7 @@ export const getUserLists = async (id: any, page: any) => {
       query: listsQuery,
       variables: { id, page },
       fetchPolicy: "no-cache",
+      errorPolicy: "all",
     });
     return lists;
   } catch (error) {
