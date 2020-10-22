@@ -4,12 +4,15 @@ import { getUserLists } from "../../services/ListsService/ListsService";
 import { Link } from "react-router-dom";
 import CreateList from "../../Components/CreateList/CreateList";
 import ViewMoreButton from "../../Components/ViewMoreButton/ViewMoreButton";
+import { useStoreState } from "easy-peasy";
+import { Model } from "../../SnackbarStore/snackbarStore";
 import "./Applist.css";
 
 const AppList: React.FC = () => {
   let [page, setPage] = useState(1);
   const [lists, setLists] = useState<any>([]);
   const { user, isAuthenticated } = useAuth0();
+  const { message } = useStoreState<Model>((state) => state.snackbar);
 
   useEffect(() => {
     setPage(1);
@@ -25,9 +28,10 @@ const AppList: React.FC = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onAddNewList = async () => {
+    setPage(1);
     try {
-      const lists = await getUserLists(user.sub, page);
-      setLists(lists);
+      const newlist = await getUserLists(user.sub, page);
+      setLists(newlist);
     } catch (error) {
       console.log(error);
     }
@@ -46,6 +50,7 @@ const AppList: React.FC = () => {
   const arrOfChecks = [
     lists && lists.length > 0,
     lists && lists.length % 9 === 0,
+    message.length === 0,
   ].every((element) => element === true);
 
   return (
