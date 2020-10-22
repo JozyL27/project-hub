@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from "react";
 import LandingPage from "./Routes/LandingPage/LandingPage";
 import Header from "./Components/Header/Header";
 import { Switch, Route } from "react-router-dom";
+import ErrorHandler from "./Components/ErrorHandler/ErrorHandler";
 const ListPage = lazy(() => import("./Routes/ListPage/ListPage"));
 const AppList = lazy(() => import("./Routes/AppList/AppList"));
 const ProjectPage = lazy(() => import("./Routes/ProjectPage/ProjectPage"));
@@ -11,6 +12,7 @@ const App = () => {
   return (
     <div className="App">
       <Header />
+      <ErrorHandler />
       <Suspense fallback={<p>...loading</p>}>
         <Switch>
           <Route exact path="/" component={LandingPage} />

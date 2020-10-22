@@ -6,31 +6,30 @@ import CreateList from "../../Components/CreateList/CreateList";
 import ViewMoreButton from "../../Components/ViewMoreButton/ViewMoreButton";
 import "./Applist.css";
 
-const AppList = () => {
-  const [lists, setLists] = useState<any>([]);
-  const [error, setError] = useState<any>(null);
+const AppList: React.FC = () => {
   let [page, setPage] = useState(1);
+  const [lists, setLists] = useState<any>([]);
   const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
-    setError(null);
     setPage(1);
     const fetchData = async () => {
-      const lists = await getUserLists(user.sub, page).catch((err: any) => {
-        setError(err);
-      });
-      setLists(lists);
+      try {
+        const lists = await getUserLists(user.sub, page);
+        setLists(lists);
+      } catch (error) {
+        console.log(error);
+      }
     };
     isAuthenticated && fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onAddNewList = async () => {
-    setError(null);
     try {
       const lists = await getUserLists(user.sub, page);
       setLists(lists);
     } catch (error) {
-      setError(error);
+      console.log(error);
     }
   };
 
@@ -40,21 +39,19 @@ const AppList = () => {
       const viewMoreLists = await getUserLists(user.sub, page);
       setLists([...lists, ...viewMoreLists]);
     } catch (error) {
-      setError(error);
+      console.log(error);
     }
   };
 
   const arrOfChecks = [
     lists && lists.length > 0,
     lists && lists.length % 9 === 0,
-    !error,
   ].every((element) => element === true);
 
   return (
     <section className="appListSection">
       <h3>Lists</h3>
       <CreateList onAddNewList={onAddNewList} />
-      {error && <p className="error">{error.message}</p>}
       <ul className="listsContainer">
         {lists
           ? lists.map((el: any) => (
