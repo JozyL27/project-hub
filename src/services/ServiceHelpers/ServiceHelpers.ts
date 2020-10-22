@@ -7,6 +7,7 @@ import {
 } from "@apollo/client";
 import config from "../../config";
 import { onError } from "@apollo/client/link/error";
+import { snackbarStore } from "../../SnackbarStore/snackbarStore";
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -15,6 +16,15 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
         `[GraphQL error]: Message: ${message}, location: ${locations}, Path: ${path}`
       )
     );
+
+    const messages = graphQLErrors
+      .map(
+        ({ message, locations, path }) =>
+          `[GraphQL error]: Message: ${message}, location: ${locations}, Path: ${path}`
+      )
+      .join(" ");
+
+    snackbarStore.dispatch.snackbar.handleOpen(messages);
   }
   if (networkError) {
     console.log(`[network error]: ${networkError}`);
