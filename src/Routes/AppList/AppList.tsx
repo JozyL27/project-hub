@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getUserLists } from "../../services/ListsService/ListsService";
-import { Link } from "react-router-dom";
 import CreateList from "../../Components/CreateList/CreateList";
 import ViewMoreButton from "../../Components/ViewMoreButton/ViewMoreButton";
 import { useStoreState } from "easy-peasy";
 import { Model } from "../../SnackbarStore/snackbarStore";
+import ListCard from "../../Components/ListCard/ListCard";
 import "./Applist.css";
 
 const AppList: React.FC = () => {
-  let [page, setPage] = useState(1);
+  let [page, setPage] = useState<number>(1);
   const [lists, setLists] = useState<any>([]);
   const { user, isAuthenticated } = useAuth0();
   const { message } = useStoreState<Model>((state) => state.snackbar);
@@ -60,11 +60,7 @@ const AppList: React.FC = () => {
       <ul className="listsContainer">
         {lists
           ? lists.map((el: any) => (
-              <Link to={`/list/${el.id}`} className="listItemLink" key={el.id}>
-                <li className="listItem">
-                  <h4>{el.title}</h4>
-                </li>
-              </Link>
+              <ListCard key={el.id} id={el.id} title={el.title} />
             ))
           : null}
       </ul>

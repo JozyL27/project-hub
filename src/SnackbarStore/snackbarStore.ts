@@ -17,6 +17,7 @@ const model: Model = {
     message: "",
     handleClose: action((errBar) => {
       errBar.open = false;
+      errBar.message = "";
     }),
     handleOpen: action((errBar, message) => {
       errBar.open = true;
