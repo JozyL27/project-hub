@@ -1,0 +1,9 @@
+.settingsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.settingsContainer > :first-child {
+  margin: 20px auto 10px auto;
+}

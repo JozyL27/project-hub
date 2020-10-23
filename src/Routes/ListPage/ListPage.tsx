@@ -5,8 +5,9 @@ import ProjectCard from "../../Components/ProjectCard/ProjectCard";
 import { useAuth0 } from "@auth0/auth0-react";
 import CreateProject from "../../Components/CreateProject/CreateProject";
 import "./ListPage.css";
+import ListSettings from "../../Components/ListSettings/ListSettings";
 
-const ListPage = (props: any) => {
+const ListPage: React.FC = (props: any) => {
   const [list, setList] = useState<any>({});
   const [error, setError] = useState<any>(null);
   const [projects, setProjects] = useState<any>([]);
@@ -38,6 +39,7 @@ const ListPage = (props: any) => {
     <section className="listPageContainer">
       <h3 className="listPageH3">{list.title}</h3>
       <CreateProject listId={listId} onAddNewProject={onAddNewProject} />
+      <ListSettings />
       {error && <p className="error">{error.message}</p>}
       <ul className="listPageUl">
         {!error && projects
