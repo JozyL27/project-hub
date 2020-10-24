@@ -1,5 +1,10 @@
 import { client } from "../ServiceHelpers/ServiceHelpers";
-import { listQuery, listsQuery, listMutation } from "./ListsSchema";
+import {
+  listQuery,
+  listsQuery,
+  listMutation,
+  deleteListMutation,
+} from "./ListsSchema";
 
 export const getListById = async (id: string) => {
   const {
@@ -39,4 +44,14 @@ export const createList = async (input: any) => {
     },
   });
   return list;
+};
+
+export const deleteList = async (id: number) => {
+  const {
+    data: { deleteList },
+  }: any = await client.mutate({
+    mutation: deleteListMutation,
+    variables: { id },
+  });
+  return deleteList;
 };

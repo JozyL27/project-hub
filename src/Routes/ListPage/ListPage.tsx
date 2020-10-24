@@ -13,6 +13,7 @@ const ListPage: React.FC = (props: any) => {
   const [projects, setProjects] = useState<any>([]);
   const { isAuthenticated } = useAuth0();
   const { listId } = props.match.params;
+  const { history } = props;
 
   const onAddNewProject = async () => {
     setError(null);
@@ -39,7 +40,7 @@ const ListPage: React.FC = (props: any) => {
     <section className="listPageContainer">
       <h3 className="listPageH3">{list.title}</h3>
       <CreateProject listId={listId} onAddNewProject={onAddNewProject} />
-      <ListSettings />
+      <ListSettings listId={listId} history={history} />
       {error && <p className="error">{error.message}</p>}
       <ul className="listPageUl">
         {!error && projects

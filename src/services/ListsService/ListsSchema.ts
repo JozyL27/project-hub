@@ -34,3 +34,9 @@ export const listMutation = gql`
   }
   ${listDetailFragment}
 `;
+
+export const deleteListMutation = gql`
+  mutation deleteList($id: ID!) {
+    deleteList(id: $id)
+  }
+`;
